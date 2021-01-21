@@ -1,0 +1,79 @@
+#메타 문자
+
+#문자 클래스 []: []사이의 문자들과 매치
+#[abc]의 경우 a, b, c 중 하나만 속해도 매치(apple, before 등)
+#'-'을 사용할 경우 범위를 의미 [a-c] == [abc], [0-5] == [0,1,2,3,4,5]
+#[0-9a-zA-Z]모든 숫자와 앗파뱃을 의미
+#자주 사용하는 정규 표현식: \d == [0-9], \w == [a-zA-Z0-9], \s == [\t\n\r\f\v]
+#^를 사용할 경우 반대 
+
+#Dot(.): \n을 제외한 모든 문자와 매치
+#a.b는 acb, a0b와 매치
+#a[.]b는 오직 a.b를 의미함
+
+#반복(*): 0부터 무한대로 반복될 수 있음
+#ca*t는 ct, caat, caaaaaat와 매치
+
+#반복(+): 1부터 무한대로 반복될 수 있음
+#ca*t는 ct와 매치될 수 없음
+
+#반복({m,n},?): 범위 한정({1,} = +, {0,} = *)
+#ca{2}t 는 caat와만 매치
+#ca{2,5}t는 caat~caaaaat와 매치
+
+#?는 {0,1}을 의미. 즉, 있어도 없어도 된다
+
+import re
+p = re.compile('[a-z]+') #패턴객체 생성
+
+#컴파일된 객체의 매서드
+
+#match: 문자열 처음부터 검색
+m1 = p.match('pyhton')
+print(m1)
+m2 = p.match('1 python')
+print(m2)
+
+match_input = input('imput any: ')
+int_started_p = re.compile('\d')
+int_started_m = int_started_p.match(match_input)
+if int_started_m:
+    print(match_input,'starts with int')
+else:
+    print(match_input,'doesn\'t start with int')
+
+
+#search: 문자열 전체에서 검색
+m2 = p.search('1 python')
+print(m2)
+
+email_pattern = re.compile('\w*@\w*')
+str_input = input('input the email: ')
+email_match = email_pattern.search(str_input)
+if email_match:
+    print(str_input,'is an email')
+else:
+    print('not an email')
+
+#findall: 정규식과 매치하여 리스트로 반환
+result = email_pattern.findall('my email is jnq8771@naver.com')
+print(result)
+
+#fineiter: 반복 가능한 객체로 반환
+str_p = re.compile('[a-z]+')
+result = str_p.finditer('i enjoy learning python')
+for i in result:
+    print(i)
+
+#match 객체의 매서드
+print('------match객체의 메서드-----')
+result = str_p.finditer('i enjoy learning python')
+for i in result:
+    print('group():', i.group())
+    print('start():', i.start())
+    print('end:', i.end())
+    print('span:', i.span())
+
+
+#모듈 단위로 수행하기
+m = re.match('[a-z]+', 'python')
