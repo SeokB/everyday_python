@@ -1,0 +1,25 @@
+import openpyxl
+
+wb = openpyxl.Workbook() #워크북 타입 값 생성 후 반환
+sheet = wb.active #시트 불러오기
+sheet2 = wb.create_sheet('두번 째 시트') #새로운 시트 생성, 변수로 조작 가능
+sheet1 = wb['Sheet'] #인덱스처럼 활용 가능
+sheet1.title = '첫번 째 시트' #시트의 이름 바꾸기
+
+sheet1['B2'] = 'b2' #[]접근: 행과 열의 수기 입력
+sheet1.cell(row = 3, column = 3).value = '3,3'
+sheet1.append([1,2,3,4,5])
+
+sheet2.cell(row = 4, column = 4).value = '안녕하세요'
+
+wb.save('test2.xlsx') #임시파일을 실제 파일로 저장
+
+
+wb = openpyxl.load_workbook('test2.xlsx') #기존에 작업하던 파일을 가져옵니다.
+
+sheet_1 = wb['첫번 째 시트']
+
+sheet_1.title = '이름 변경'
+sheet_1.append(range(99))
+
+wb.save('test2.xlsx')
