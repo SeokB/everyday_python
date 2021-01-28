@@ -1,0 +1,57 @@
+import os, re, codecs
+
+os.chdir(r'C:\Users\user0310\Desktop\컴퓨터프로그래밍\doit')
+f = codecs.open('friends101.txt', 'r', encoding= 'utf-8')
+script101 = f.read()
+
+#파일에 문제가 없는지 확인합니다.
+print(script101[:100])
+
+#monica의 대사를 추출합니다.
+monica_script = re.findall('Monica:.+', script101)
+print(monica_script[:3])
+for line in monica_script[:3]:
+    print(line + '\n')
+f.close()
+
+#추출한 대사를 입력합니다.
+f = open('monica.txt','w')
+monica = ''
+for script in monica_script:
+    f.write(script)
+f.close()
+
+#등장인물 이름 추출하기
+f = open('friends101.txt','r')
+script101 = f.read()
+
+name_pattern = re.compile('[A-Z][a-z]+:')
+characters = name_pattern.findall(script101)
+
+#중복되는 이름은 제거합니다.
+set_char = set(characters)
+characters = list(set_char)
+print(characters)
+
+#콜론을 제거합니다.
+char_wo_col = []
+for name in characters:
+    char_wo_col += [name[:-1]]
+print(char_wo_col)
+
+#코드를 한줄로 정리합니다.
+character_without_colon = [name[:-1] for name in list(set(name_pattern.findall(script101)))]
+print(character_without_colon)
+
+#지문만 추출하기
+dir_pattern1 = re.compile('\([A-Z].+[a-z|.]\)')
+dir_pattern2 = re.compile('\([A-Z].+[a-z.]\)')
+directions1 = dir_pattern1.findall(script101)
+directions2 = dir_pattern2.findall(script101)
+print(len(directions1))
+print(len(directions2))
+
+#코드를 한 줄로 정리합니다.
+directions = [dir for dir in dir_pattern1.findall(script101)]
+if directions == directions1:
+    print(True)
